@@ -19,7 +19,7 @@ resource "aws_instance" "web" {
   ami = data.aws_ami.web.id
   # or use hardcoded map
   # ami = var.amis[var.context.region]
-  instance_type = "t2.micro"
+  instance_type = var.instance_type[var.context.env]
   
   tags = merge(
         # add additional tag to default tags

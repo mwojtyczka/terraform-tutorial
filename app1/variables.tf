@@ -19,3 +19,13 @@ variable "workspace_to_environment_map" {
     prod = "prod"
   }
 }
+
+variable "instance_type" {
+  type = map
+
+  default = {
+    test = "m4.large"
+    uat  = "m4.large"
+    prod = "m4.xlarge"
+  }
+}

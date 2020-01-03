@@ -10,6 +10,16 @@ variable "context" {
   })
 }
 
+variable "instance_type" {
+  type = map
+
+  default = {
+    dev = "t2.micro"
+    preprod = "t2.micro"
+    prod = "m4.xlarge"
+  }
+}
+
 # static vars
 #variable "amis" {
 #  type = map
