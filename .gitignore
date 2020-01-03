@@ -1,0 +1,9 @@
+.idea
+*.iml
+**/.terraform
+**/.terraform-*
+**/.DS_Store
+**/*.tfstate
+**/*.tfstate.*
+
+**/*.from-git
