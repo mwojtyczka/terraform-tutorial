@@ -5,24 +5,28 @@ https://learn.hashicorp.com/terraform/getting-started/install.html
 
 This sample terraform project is meant to show a complete setup for multi-environment and multi-app deployment. It is generic enough to be used as a starting point in real projects.
 
-# Developer workflow (local)
-
-## go to the app you want to deploy
+## 1. Go to the app you want to deploy
 
 ```
-cd app1 # or cd app2
-# only envs defined by workspace_to_environment_map var are allowed
+cd app1 
+# or cd app2
+```
+
+## 2. Provide aws credentials
+
+```
+# specify env, only envs defined by workspace_to_environment_map var are allowed
 export ENV=dev
-export PROFILE=dev
+
+# specify aws profile
+export TF_VAR_profile=dev
+
+# or aws credentials 
+export AWS_ACCESS_KEY_ID=accesskey
+export AWS_SECRET_ACCESS_KEY=secretkey
 ```
 
-## provide aws credentials
-
-```
-export TF_VAR_profile=${PROFILE}
-```
-
-## deploy env
+# 3. Typical developer workflow (local)
 
 ```
 terraform init
@@ -32,39 +36,30 @@ terraform apply
 terraform destroy
 ```
 
-# CI/CD workflow
+# 4. CI/CD workflow
 
 Useful links:
-https://learn.hashicorp.com/terraform/development/running-terraform-in-automation
-https://www.terraform.io/docs/providers/aws/index.html
 
-## Provide credentials
+* https://learn.hashicorp.com/terraform/development/running-terraform-in-automation
+* https://www.terraform.io/docs/providers/aws/index.html
 
-* via profile
-```
-export TF_VAR_profile=${PROFILE}
-```
 
-* or via env vars
-```
-export AWS_ACCESS_KEY_ID=accesskey
-export AWS_SECRET_ACCESS_KEY=secretkey
-```
+## de-emphasize specific commands to run
 ```
 export TF_IN_AUTOMATION=enabled
 ```
 
 ## init
 ```
-# for local backend
+# for local backend (state stored in terraform.tfstate.d local dir) that could be, for instance, later pushed to a separate git state repo
 terraform init
 
-# for s3 backend
+# for s3 backend (sate stored in s3)
 terraform init \
     -backend-config="bucket=<provide bucket>" \
     -backend-config="key=app1/terraform.tfstate" \
     -backend-config="region=eu-central-1" \
-    -backend-config="profile=${PROFILE}"
+    -backend-config="profile=${AWS_PROFILE}"
 ```
 
 ## deploy env
