@@ -1,88 +1,76 @@
 # terraform-tutorial
 
-This project shows how to use terraform for multi-environment and multi-app deployment.
+A great step by step tutorial is published here:
+https://learn.hashicorp.com/terraform/getting-started/install.html
+
+This sample terraform project is meant to show a complete setup for multi-environment and multi-app deployment. It is generic enough to be used as a starting point in real projects.
 
 # Developer workflow (local)
 
 ## go to the app you want to deploy
+
 ```
-cd app1
+cd app1 # or cd app2
+# only envs defined by workspace_to_environment_map var are allowed
+export ENV=dev
+export PROFILE=dev
 ```
 
 ## provide aws credentials
-* linux
+
 ```
-export TF_VAR_profile=tm6-dev
+export TF_VAR_profile=${PROFILE}
 ```
 
-* windows
-```
-set TF_VAR_profile=tm6-dev
-```
+## deploy env
 
-## deploy dev env
 ```
 terraform init
-terraform workspace new dev
-terraform workspace select dev
+terraform workspace new ${ENV}
+#terraform workspace select ${ENV}
 terraform apply
 terraform destroy
 ```
 
-## deploy preprod env
-```
-terraform init
-terraform workspace new preprod
-terraform workspace select preprod
-terraform apply
-terraform destroy
-```
+# CI/CD workflow
 
-## deploy prod env
-```
-export TF_VAR_profile=tm6-prod
-
-terraform init
-terraform workspace new prod
-terraform workspace select prod
-terraform apply
-terraform destroy
-```
-
-# CI/CD setup workflow
+Useful links:
 https://learn.hashicorp.com/terraform/development/running-terraform-in-automation
 https://www.terraform.io/docs/providers/aws/index.html
 
 ## Provide credentials
 
-* either use profile
+* via profile
 ```
-export TF_VAR_profile=tm6-dev
+export TF_VAR_profile=${PROFILE}
 ```
 
-* or env vars
+* or via env vars
 ```
 export AWS_ACCESS_KEY_ID=accesskey
 export AWS_SECRET_ACCESS_KEY=secretkey
 ```
 ```
 export TF_IN_AUTOMATION=enabled
-terraform init
 ```
 
-## init with s3 backend
+## init
 ```
+# for local backend
+terraform init
+
+# for s3 backend
 terraform init \
-    -backend-config="bucket=dev-terraform-state-tm6-vorwerk" \
+    -backend-config="bucket=<provide bucket>" \
     -backend-config="key=app1/terraform.tfstate" \
     -backend-config="region=eu-central-1" \
-    -backend-config="profile=tm6-dev"
+    -backend-config="profile=${PROFILE}"
 ```
 
 ## deploy env
 ```
-terraform workspace new dev
-terraform workspace select dev # export TF_WORKSPACE=dev
+terraform workspace new ${ENV}
+#terraform workspace select ${ENV}
 terraform apply -input=false -auto-approve
 terraform destroy -auto-approve
 ```
