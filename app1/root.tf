@@ -8,6 +8,6 @@ terraform {
   required_version = ">= 0.12"
 
   # by default state is stored in local dir
-  # storing state in s3
+  # uncomment to store state in s3
   # backend "s3" {}
 }
