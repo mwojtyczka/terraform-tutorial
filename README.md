@@ -3,7 +3,7 @@
 A great step by step tutorial is published here:
 https://learn.hashicorp.com/terraform/getting-started/install.html
 
-This sample terraform project is meant to show a complete setup for multi-environment and multi-app deployment. It is generic enough to be used as a starting point in real projects.
+This sample terraform project is meant to show a complete setup for multi-environment and multi-app deployment. It is generic enough to be used as a starting point in real projects. The project deploys a few resources (ec2 and s3).
 
 ## 1. Go to the app you want to deploy
 
