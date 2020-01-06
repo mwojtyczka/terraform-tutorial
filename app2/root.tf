@@ -1,6 +1,7 @@
 # https://www.terraform.io/docs/providers/aws/index.html
 provider "aws" {
   region  = var.region
+  profile = var.profile
 }
 
 terraform {
